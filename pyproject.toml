@@ -2,12 +2,10 @@
 name = "django-hexagonal"
 version = "0.1.0"
 description = "Django template with hexagonal architecture"
-authors = [
-    {name = "Your Name", email = "your@email.com"}
-]
+authors = [{ name = "Your Name", email = "your@email.com" }]
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 dependencies = [
     "django>=5.0",
@@ -15,6 +13,7 @@ dependencies = [
     "celery[redis]>=5.3",
     "pyjwt>=2.8",
     "pydantic>=2.5",
+    "email-validator>=2.1",
     "python-dotenv>=1.0",
     "gunicorn>=21.2",
     "whitenoise>=6.6",
@@ -28,7 +27,7 @@ dev = [
     "ruff>=0.1",
     "mypy>=1.7",
     "django-stubs>=4.2",
-    "httpx>=0.25",  # For testing async views
+    "httpx>=0.25",        # For testing async views
     "factory-boy>=3.3",
 ]
 
@@ -43,6 +42,7 @@ distribution = true
 dev = "python manage.py runserver"
 migrate = "python manage.py migrate"
 makemigrations = "python manage.py makemigrations"
+createsuperuser = "python manage.py createsuperuser"
 shell = "python manage.py shell"
 test = "pytest tests/ -v"
 test-cov = "pytest tests/ -v --cov=src --cov-report=html"
@@ -55,19 +55,19 @@ celery = "celery -A src.infrastructure.messaging.celery_app worker -l INFO"
 target-version = "py311"
 line-length = 100
 select = [
-    "E",      # pycodestyle errors
-    "W",      # pycodestyle warnings
-    "F",      # Pyflakes
-    "I",      # isort
-    "B",      # flake8-bugbear
-    "C4",     # flake8-comprehensions
-    "UP",     # pyupgrade
-    "ARG",    # flake8-unused-arguments
-    "SIM",    # flake8-simplify
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
 ]
 ignore = [
-    "E501",   # line too long (handled by formatter)
-    "B008",   # do not perform function calls in argument defaults
+    "E501", # line too long (handled by formatter)
+    "B008", # do not perform function calls in argument defaults
 ]
 
 [tool.ruff.isort]

@@ -4,6 +4,7 @@ API URL Configuration.
 This is the main URL router for the API.
 """
 
+from django.contrib import admin
 from django.urls import path
 
 from interface.api.views.auth_views import (
@@ -16,6 +17,8 @@ from interface.api.views.auth_views import (
 from interface.api.views.health_views import HealthView
 
 urlpatterns = [
+    # Django Admin
+    path("admin/", admin.site.urls),
     # Health check
     path("api/health", HealthView.as_view(), name="health"),
     # Authentication

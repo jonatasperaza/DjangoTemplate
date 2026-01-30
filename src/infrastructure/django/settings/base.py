@@ -15,9 +15,12 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-change-me-in-production")
 
 # Application definition
 INSTALLED_APPS = [
-    # Django built-in apps (minimal set for API-only)
+    # Django built-in apps
+    "django.contrib.admin",
     "django.contrib.contenttypes",
     "django.contrib.auth",
+    "django.contrib.sessions",
+    "django.contrib.messages",
     # Our infrastructure app
     "infrastructure.django.apps.InfrastructureConfig",
 ]
@@ -25,14 +28,17 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # Note: We use our own auth middleware, not Django's session-based auth
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    # Our JWT auth middleware for API endpoints
     "infrastructure.web.middleware.auth_middleware.JWTAuthMiddleware",
 ]
 
 ROOT_URLCONF = "interface.api.urls"
 
-# Templates (minimal for admin-only use if needed)
+# Templates configuration
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -40,7 +46,10 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -70,9 +79,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # This is the Django model that adapts our domain User entity
 AUTH_USER_MODEL = "django_infra.UserModel"
 
-# We disable Django's session-based authentication backends
-# because we're using JWT cookies
-AUTHENTICATION_BACKENDS = []
+# Authentication backends - use ModelBackend for admin access
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 LANGUAGE_CODE = "pt-br"
@@ -83,7 +93,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

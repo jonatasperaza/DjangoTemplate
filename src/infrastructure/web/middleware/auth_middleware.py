@@ -25,8 +25,9 @@ class JWTAuthMiddleware:
         "/api/docs",
     ]
 
-    # Prefixes that are always public
+    # Prefixes that are always public (use Django's session auth or no auth)
     PUBLIC_PREFIXES = [
+        "/admin/",  # Django admin uses session auth
         "/static/",
         "/media/",
     ]
