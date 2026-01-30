@@ -28,12 +28,9 @@ src/
 - PostgreSQL (ou SQLite para dev)
 - Redis (para Celery)
 
-### Instalação
-
-```bash
 # Clone o repositório
-git clone <repo-url>
-cd django-hexagonal
+git clone https://github.com/jonatasperaza/DjangoTemplate.git
+cd DjangoTemplate
 
 # Instale dependências
 pdm install
